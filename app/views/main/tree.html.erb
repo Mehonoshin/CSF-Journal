@@ -8,7 +8,7 @@ Ext.onReady(function(){
         autoScroll: true,
 		width: 200,
         animate: true,
-        enableDD: false,
+        enableDD: true,
         containerScroll: true,
         border: true,
         // auto create TreeLoader
@@ -25,6 +25,20 @@ Ext.onReady(function(){
     // render the tree
     tree.render('tree-div');
     tree.getRootNode().expand();
+	
+	tree.on('beforemovenode', function(tree, node, oldParent, newParent, index) {
+		Ext.Ajax.request({ 
+			url: '/move', 
+			params: {
+				nodeid: node.id, 
+				newparentid: newParent.id, 
+				oldparentid: oldParent.id, 
+				dropindex: index,
+				leaf: node.leaf
+			} 
+		});
+	});
+
 });
 </script>
 
