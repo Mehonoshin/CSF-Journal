@@ -1,0 +1,31 @@
+<script>
+Ext.onReady(function(){
+    // shorthand
+    var Tree = Ext.tree;
+
+    var tree = new Tree.TreePanel({
+        useArrows: true,
+        autoScroll: true,
+		width: 200,
+        animate: true,
+        enableDD: false,
+        containerScroll: true,
+        border: true,
+        // auto create TreeLoader
+        dataUrl: '/gettree',
+
+        root: {
+            nodeType: 'async',
+            text: 'People',
+            draggable: false,
+            id: '1'
+        }
+    });
+
+    // render the tree
+    tree.render('tree-div');
+    tree.getRootNode().expand();
+});
+</script>
+
+<div id="tree-div"></div>
