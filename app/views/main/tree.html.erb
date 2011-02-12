@@ -1,8 +1,32 @@
 <script>
-Ext.onReady(function(){
-    // shorthand
-    var Tree = Ext.tree;
 
+Ext.onReady(function(){
+	function treeContextHandler(node) { 
+		node.select(); 
+		contextMenu.show(node.ui.getAnchor());
+	}
+	
+	function deleteHandler() { 
+		var node = tree.getSelectionModel().getSelectedNode();
+		Ext.Ajax.request({ 
+			url: '/delete', 
+			params: {
+				nodeid: node.id, 
+				leaf: node.leaf
+			} 
+		});
+		tree.getSelectionModel().getSelectedNode().remove();
+	}
+	
+	function addHandler() {
+		
+	}	
+	
+	function editHandler() {
+		
+	}
+	
+    var Tree = Ext.tree;
     var tree = new Tree.TreePanel({
         useArrows: true,
         autoScroll: true,
@@ -22,10 +46,17 @@ Ext.onReady(function(){
         }
     });
 
-    // render the tree
+	var contextMenu = new Ext.menu.Menu({
+		items: [
+			{ text: 'Add', handler: addHandler },
+			{ text: 'Edit', handler: editHandler },
+			{ text: 'Delete', handler: deleteHandler }			
+		]
+	});
+
     tree.render('tree-div');
     tree.getRootNode().expand();
-	
+
 	tree.on('beforemovenode', function(tree, node, oldParent, newParent, index) {
 		Ext.Ajax.request({ 
 			url: '/move', 
@@ -37,9 +68,11 @@ Ext.onReady(function(){
 				leaf: node.leaf
 			} 
 		});
-	});
+	});	
+	tree.on('contextmenu', treeContextHandler);
 
 });
 </script>
 
 <div id="tree-div"></div>
+<div id="sel">-</div>

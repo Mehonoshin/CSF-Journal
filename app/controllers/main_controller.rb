@@ -8,8 +8,7 @@ class MainController < ApplicationController
   def gettree
     groups = Group.find(params['node']).groups
     json = '['
-    i = 0
-    
+    i = 0    
     if not groups.empty?
       groups.each do |g|
         if i != 0
@@ -46,6 +45,16 @@ class MainController < ApplicationController
         g.save
       end
     end
+    render :text => ''
+  end
+  
+  def delete
+    if params['leaf'] != ''
+      User.find(params['nodeid']).destroy
+    else
+      Group.find(params['nodeid']).destroy
+    end
+    render :text => '[{"success" : "true"}]'
   end
   
 end
