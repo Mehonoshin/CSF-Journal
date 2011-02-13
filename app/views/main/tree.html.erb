@@ -23,11 +23,12 @@ Ext.onReady(function() {
 
 	var contextMenu = new Ext.menu.Menu({
 		items: [
-			{ text: 'Add', handler: addHandler },
+			{ text: 'Add user', handler: addHandler },
+			{ text: 'Add group', handler: addGroupHandler },
 			{ text: 'Edit', handler: editHandler },
 			{ text: 'Delete', handler: deleteHandler },
 			{ text: 'Copy', handler: copyHandler },
-			{ text: 'Paste', handler: pasteHandler }						
+			{ text: 'Paste', handler: pasteHandler, disabled: "true" }						
 		]
 	});
 	
@@ -47,7 +48,26 @@ Ext.onReady(function() {
 	
 	function treeContextHandler(node) { 
 		node.select(); 
+		if (node.leaf == 'true') {
+			contextMenu.get(0).hide();
+			contextMenu.get(1).hide();
+		} else {
+			contextMenu.get(0).show();
+			contextMenu.get(1).show();
+		}
+		if (selectedNode) {
+			contextMenu.get(5).enable();
+		} else {
+			contextMenu.get(5).disable();
+		}
 		contextMenu.show(node.ui.getAnchor());
+	}
+
+	function addGroupHandler() {
+		var parent = tree.getSelectionModel().getSelectedNode();
+		Ext.Msg.prompt("Create group?", "Type group description", function (btn, text) {
+			// parent.append()
+		});
 	}
 	
 	function copyHandler() {
@@ -57,21 +77,33 @@ Ext.onReady(function() {
 	function pasteHandler() {
 		var parent = tree.getSelectionModel().getSelectedNode();
 		if ( ! parent.leaf ) {
-			// parent.appendChild(clone(selectedNode));
+			var currentNodeId = selectedNode.id;
+			var newParent = parent.id;
+			var isLeaf = selectedNode.leaf;
+			parent.appendChild(new Ext.tree.TreeNode(selectedNode.attributes));			
+			Ext.Ajax.request({ 
+				url: '/copy', 
+				params: {
+					nodeid: currentNodeId, 
+					newparentid: newParent,
+					leaf: isLeaf,
+					append: 'true'
+				}
+			});
+			selectedNode = null;
 		}
 	}
 	
 	function deleteHandler() { 
 		var node = tree.getSelectionModel().getSelectedNode();
-		console.log(node);
-		// Ext.Ajax.request({ 
-		// 	url: '/delete', 
-		// 	params: {
-		// 		nodeid: node.id, 
-		// 		leaf: node.leaf
-		// 	} 
-		// });
-		// tree.getSelectionModel().getSelectedNode().remove();
+		Ext.Ajax.request({ 
+			url: '/delete', 
+			params: {
+				nodeid: node.id, 
+				leaf: node.leaf
+			} 
+		});
+		tree.getSelectionModel().getSelectedNode().remove();
 	}
 	
 	function addHandler() {
@@ -85,7 +117,6 @@ Ext.onReady(function() {
 	}
 	function copyMouseHandler(de) {
 		if (de.rawEvent.ctrlKey) {
-			// console.log(de);
 			de.dropNode = new Ext.tree.TreeNode(de.dropNode.attributes);
 			var newParent = de.target.id;
 			var currentNodeId = de.dropNode.id;
