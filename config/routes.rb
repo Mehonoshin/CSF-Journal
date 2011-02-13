@@ -4,4 +4,5 @@ Csf::Application.routes.draw do
   match 'gettree' => "main#gettree"
   match 'move' => "main#move"  
   match 'delete' => "main#delete"
+  match 'copy' => "main#copy"
 end

@@ -31,7 +31,6 @@ class MainController < ApplicationController
     render :text => json
   end
   
-  
   def move
     if params['leaf'] != ''
       u = User.find(params['nodeid'])
@@ -53,6 +52,13 @@ class MainController < ApplicationController
       User.find(params['nodeid']).destroy
     else
       Group.find(params['nodeid']).destroy
+    end
+    render :text => '[{"success" : "true"}]'
+  end
+  
+  def copy
+    if (params[:append])
+      User.find(params[:nodeid]).groups << Group.find(params[:newparentid])
     end
     render :text => '[{"success" : "true"}]'
   end
