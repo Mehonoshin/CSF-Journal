@@ -65,8 +65,24 @@ Ext.onReady(function() {
 
 	function addGroupHandler() {
 		var parent = tree.getSelectionModel().getSelectedNode();
+		var newId;
+		var newDesc;
 		Ext.Msg.prompt("Create group?", "Type group description", function (btn, text) {
-			// parent.append()
+			newDesc = text;
+			Ext.Ajax.request({ 
+				url: '/addgroup',
+				success: function (response) {
+					newId = response.responseText;
+				},
+				params: {
+					desc: text,
+					parentid: parent.id
+				} 
+			});
+			parent.appendChild(new Ext.tree.TreeNode({
+				id: newId,
+				text: newDesc
+			}));
 		});
 	}
 	
@@ -112,8 +128,22 @@ Ext.onReady(function() {
 	}	
 	
 	function editHandler() {
-		studentWindow.title = 'Edit student';
-		studentWindow.show();		
+		var node = tree.getSelectionModel().getSelectedNode();
+		if (node.leaf != 'true') {
+			Ext.Msg.prompt("Edit group?", 'Edit groups description', function (btn, text) {
+				Ext.Ajax.request({ 
+					url: '/updategroup', 
+					params: {
+						nodeid: node.id, 
+						desc: text
+					} 
+				});
+				node.setText(text);
+			}, null, null, node.attributes.text);
+		} else {
+			studentWindow.title = 'Edit student';
+			studentWindow.show();	
+		}		
 	}
 	function copyMouseHandler(de) {
 		if (de.rawEvent.ctrlKey) {

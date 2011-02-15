@@ -63,4 +63,15 @@ class MainController < ApplicationController
     render :text => '[{"success" : "true"}]'
   end
   
+  def addgroup
+    g = Group.create(:description => params[:desc], :group_id => params[:parentid])
+    render :json => g.id
+  end
+  
+  def updategroup
+    g = Group.find(params[:nodeid])
+    g.description = params[:desc]
+    g.save
+    render :text => ''
+  end
 end

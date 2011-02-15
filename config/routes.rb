@@ -5,4 +5,6 @@ Csf::Application.routes.draw do
   match 'move' => "main#move"  
   match 'delete' => "main#delete"
   match 'copy' => "main#copy"
+  match 'addgroup' => "main#addgroup"  
+  match 'updategroup' => "main#updategroup"    
 end
