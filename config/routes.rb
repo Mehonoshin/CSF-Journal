@@ -7,4 +7,6 @@ Csf::Application.routes.draw do
   match 'copy' => "main#copy"
   match 'addgroup' => "main#addgroup"  
   match 'updategroup' => "main#updategroup"    
+  match 'delfrom' => "main#delfrom"    
+  match 'adduser' => "main#adduser"
 end

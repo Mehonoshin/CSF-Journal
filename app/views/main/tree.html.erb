@@ -3,6 +3,7 @@
 Ext.onReady(function() {
 	
 	var Tree = Ext.tree;
+	
     var tree = new Tree.TreePanel({
         useArrows: true,
         autoScroll: true,
@@ -28,7 +29,8 @@ Ext.onReady(function() {
 			{ text: 'Edit', handler: editHandler },
 			{ text: 'Delete', handler: deleteHandler },
 			{ text: 'Copy', handler: copyHandler },
-			{ text: 'Paste', handler: pasteHandler, disabled: "true" }						
+			{ text: 'Paste', handler: pasteHandler, disabled: "true" },
+			{ text: 'Delete from group', handler: delfromHandler}
 		]
 	});
 	
@@ -37,10 +39,45 @@ Ext.onReady(function() {
 		height: 200, 
 		width: 300,
 		resizable: false,
+		url: '/lol',
 		closeAction: 'hide',
 		items: [
-			{ xtype: 'textfield', fieldLabel: 'Name' },
-			{ xtype: 'textfield', fieldLabel: 'Student number' },			
+			{ xtype: 'textfield', fieldLabel: 'Name', name: 'hello', allowBlank: false, id: "stud-name-field" },
+			{ xtype: 'textfield', fieldLabel: 'Student number', allowBlank: false, id: "stud-num-field" },			
+		],
+		buttons: [
+			{
+				text: 'Apply',
+				handler: function() {
+					Ext.Ajax.request({ 
+						url: '/adduser',
+						success: function(response) {
+							newId = response.responseText;
+							studentWindow.get('stud-name-field').setValue('');
+							studentWindow.get('stud-num-field').setValue('');
+							studentWindow.hide();
+						},
+						failure: function() {
+							Ext.Msg.alert("Error", "Unable to add user");
+						},
+						params: {
+							name: studentWindow.get('stud-name-field').getValue(),
+							studNumber: studentWindow.get('stud-num-field').getValue()
+						} 
+					});
+					// parent.appendChild(new Ext.tree.TreeNode({
+					// 	id: newId,
+					// 	text: newDesc
+					// }));
+					
+				},
+			},
+			{
+				text: 'Cancel',
+				handler: function() {
+					studentWindow.hide();
+				}
+			}
 		] 
 	});
 	
@@ -51,16 +88,35 @@ Ext.onReady(function() {
 		if (node.leaf == 'true') {
 			contextMenu.get(0).hide();
 			contextMenu.get(1).hide();
+			contextMenu.get(4).show();
+			contextMenu.get(5).show();
 		} else {
 			contextMenu.get(0).show();
 			contextMenu.get(1).show();
-		}
-		if (selectedNode) {
-			contextMenu.get(5).enable();
-		} else {
-			contextMenu.get(5).disable();
+			contextMenu.get(4).hide();
+			if (selectedNode) {
+				contextMenu.get(5).show();
+				contextMenu.get(5).enable();
+			} else {
+				contextMenu.get(5).hide();
+				contextMenu.get(5).disable();
+			}
+			
 		}
 		contextMenu.show(node.ui.getAnchor());
+	}
+	
+	function delfromHandler() {
+		var node = tree.getSelectionModel().getSelectedNode();
+		var parentId = node.parentNode.id;
+		Ext.Ajax.request({ 
+			url: '/delfrom', 
+			params: {
+				nodeid: node.id.slice(0, -1), 
+				parentid: parentId,
+				leaf: node.leaf
+			}
+		});		
 	}
 
 	function addGroupHandler() {
@@ -131,20 +187,23 @@ Ext.onReady(function() {
 		var node = tree.getSelectionModel().getSelectedNode();
 		if (node.leaf != 'true') {
 			Ext.Msg.prompt("Edit group?", 'Edit groups description', function (btn, text) {
-				Ext.Ajax.request({ 
-					url: '/updategroup', 
-					params: {
-						nodeid: node.id, 
-						desc: text
-					} 
-				});
-				node.setText(text);
+				if (text != '') {
+					Ext.Ajax.request({ 
+						url: '/updategroup', 
+						params: {
+							nodeid: node.id, 
+							desc: text
+						} 
+					});
+					node.setText(text);					
+				}
 			}, null, null, node.attributes.text);
 		} else {
 			studentWindow.title = 'Edit student';
 			studentWindow.show();	
 		}		
 	}
+	
 	function copyMouseHandler(de) {
 		if (de.rawEvent.ctrlKey) {
 			de.dropNode = new Ext.tree.TreeNode(de.dropNode.attributes);

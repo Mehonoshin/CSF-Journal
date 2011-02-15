@@ -15,7 +15,7 @@ class MainController < ApplicationController
           json << ','
         end
         i += 1
-        json << '{"text":"' + g.description + '","id":"' + g.id.to_s + '"}'
+        json << '{"text":"' + g.description + '","id":"' + g.id.to_s + 'g"}'
       end
     end
     users = Group.find(params['node']).users
@@ -24,7 +24,7 @@ class MainController < ApplicationController
         json << ','
       end
       i += 1
-      json << '{"text":"' + g.username + '","id":"' + g.id.to_s + '", "leaf" : "true"}'
+      json << '{"text":"' + g.username + '","id":"' + g.id.to_s + 'u", "leaf" : "true"}'
     end      
     
     json << ']'
@@ -72,6 +72,15 @@ class MainController < ApplicationController
     g = Group.find(params[:nodeid])
     g.description = params[:desc]
     g.save
+    render :text => ''
+  end
+  
+  def delfrom
+    User.find(params[:nodeid]).groups.delete(Group.find(params[:parentid]))
+    render :text => ''
+  end
+  
+  def adduser
     render :text => ''
   end
 end
