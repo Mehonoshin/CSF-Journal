@@ -10,4 +10,5 @@ Csf::Application.routes.draw do
   match 'delfrom' => "main#delfrom"    
   match 'adduser' => "main#adduser"
   match 'getuser' => "main#getuser"
+  match 'updateuser' => "main#updateuser"
 end

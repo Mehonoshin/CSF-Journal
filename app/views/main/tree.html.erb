@@ -1,7 +1,7 @@
 <script>
 
 Ext.onReady(function() {
-	
+	var selectedNode;
 	var Tree = Ext.tree;
 	
     var tree = new Tree.TreePanel({
@@ -39,11 +39,10 @@ Ext.onReady(function() {
 		height: 250, 
 		width: 300,
 		resizable: false,
-		url: '/lol',
 		closeAction: 'hide',
 		items: [
 			{ xtype: 'radio', fieldLabel: 'Student', name: 'userType', handler: userTypeChangeHandler, checked: true},
-			{ xtype: 'radio', fieldLabel: 'Tutor', name: 'userType' },			
+			{ xtype: 'radio', fieldLabel: 'Tutor', name: 'userType', handler: userTypeChangeHandler },			
 			{ xtype: 'textfield', fieldLabel: 'Name', allowBlank: false, id: "name-field" },
 			{ xtype: 'textfield', fieldLabel: 'Username', allowBlank: false, id: "username-field" },			
 			{ xtype: 'textfield', fieldLabel: 'Student number', allowBlank: false, id: "stud-num-field" },			
@@ -53,9 +52,14 @@ Ext.onReady(function() {
 		buttons: [
 			{
 				text: 'Apply',
+				id: 'apply-btn',
 				handler: addUser
-			},
-			{
+			},{
+				text: 'Update',
+				id: 'update-btn',
+				handler: updateUser,
+				hidden: true
+			},{
 				text: 'Cancel',
 				handler: function() {
 					addWindow.hide();
@@ -64,9 +68,30 @@ Ext.onReady(function() {
 		] 
 	});
 	
-	var selectedNode;
-	
 	// Handlers
+	
+	function updateUser() {
+		var node = tree.getSelectionModel().getSelectedNode();
+		Ext.Ajax.request({
+			url: '/updateuser',
+			params: {
+				id: node.id.slice(0, -1),
+				name: addWindow.get('name-field').getValue(),
+				username: addWindow.get('username-field').getValue(),															
+				studNumber: addWindow.get('stud-num-field').getValue(),
+				position: addWindow.get('tutor-position-field').getValue(),
+				grade: addWindow.get('tutor-grade-field').getValue()				
+			},
+			success: function() {
+				node.setText(addWindow.get('username-field').getValue());
+				clearUserForm();
+				addWindow.hide();
+			},
+			failure: function() {
+				Ext.Msg.alert("Error", "Unable to update user");
+			}
+		});
+	}
 	
 	function addUser() {
 		var parent = tree.getSelectionModel().getSelectedNode();
@@ -78,11 +103,7 @@ Ext.onReady(function() {
 					id: newId,
 					text: addWindow.get('username-field').getValue()
 				}));
-				addWindow.get('name-field').setValue('');
-				addWindow.get('username-field').setValue('');
-				addWindow.get('stud-num-field').setValue('');
-				addWindow.get('tutor-position-field').setValue('');
-				addWindow.get('tutor-grade-field').setValue('');
+				clearUserForm();
 				addWindow.hide();
 			},
 			failure: function() {
@@ -100,8 +121,16 @@ Ext.onReady(function() {
 		});					
 	}
 	
+	function clearUserForm() {
+		addWindow.get('name-field').setValue('');
+		addWindow.get('username-field').setValue('');
+		addWindow.get('stud-num-field').setValue('');
+		addWindow.get('tutor-position-field').setValue('');
+		addWindow.get('tutor-grade-field').setValue('');
+	}
+	
 	function userTypeChangeHandler(a, b, c) {
-		if (b) {
+		if (addWindow.get(0).getValue()) {
 			addWindow.get('stud-num-field').show();
 			addWindow.get('tutor-position-field').hide();
 			addWindow.get('tutor-grade-field').hide();
@@ -209,6 +238,10 @@ Ext.onReady(function() {
 	
 	function addHandler() {
 		addWindow.title = 'Add user';
+		addWindow.get(0).show();
+		addWindow.get(1).show();
+		clearUserForm()
+		toggleButtons('add');
 		addWindow.show();
 	}	
 	
@@ -228,7 +261,11 @@ Ext.onReady(function() {
 				}
 			}, null, null, node.attributes.text);
 		} else {
+			addWindow.get(0).hide();
+			addWindow.get(1).hide();
+			toggleButtons('edit');
 			addWindow.title = 'Edit user';
+			
 			var node = tree.getSelectionModel().getSelectedNode();
 			Ext.Ajax.request({
 				url: '/getuser',
@@ -236,7 +273,19 @@ Ext.onReady(function() {
 					id: node.id
 				},
 				success: function(response) {
-					console.log(Ext.util.JSON.decode(response.responseText));
+					var result = Ext.util.JSON.decode(response.responseText);
+					if (result[0].user.profile_type == 'Tutor') {
+						name = result[1].tutor.name;
+						addWindow.get('tutor-grade-field').setValue(result[1].tutor.grade);
+						addWindow.get('tutor-position-field').setValue(result[1].tutor.position);
+						userTypeChangeHandler(null, false, null);
+					} else {
+						name = result[1].student.name;
+						addWindow.get('stud-num-field').setValue(result[1].student.student_number);
+						userTypeChangeHandler(null, true, null);
+					}
+					addWindow.get('name-field').setValue(name);
+					addWindow.get('username-field').setValue(result[0].user.username);										
 				}
 			});
 			addWindow.show();	
@@ -262,6 +311,16 @@ Ext.onReady(function() {
 		return true;
 	}
 
+	function toggleButtons(action) {
+		if (action == 'add') {
+			addWindow.buttons[0].show();
+			addWindow.buttons[1].hide();			
+		} else {
+			addWindow.buttons[1].show();
+			addWindow.buttons[0].hide();
+		}
+	}
+	
 	// Listeners
 	
     tree.render('tree-div');

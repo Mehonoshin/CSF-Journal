@@ -99,4 +99,20 @@ class MainController < ApplicationController
     u = User.find(params[:id])
     render :json => [u, u.profile]
   end
+  
+  def updateuser
+    u = User.find(params[:id])
+    u.profile.name = params[:name]
+    u.username = params[:username]
+    p = u.profile
+    if u.profile_type == "Student"
+      p.student_number = params[:studNumber]
+    else
+      p.position = params[:position]
+      p.grade = params[:grade]
+    end
+    p.save
+    u.save
+    render :text => ''
+  end
 end
