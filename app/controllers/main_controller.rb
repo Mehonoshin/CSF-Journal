@@ -81,6 +81,17 @@ class MainController < ApplicationController
   end
   
   def adduser
+    u = User.create(:username => params[:username], :hash => "newPass9")
+    if params[:type]
+      p = Student.create(:name => params[:name], :student_number => params[:studNumber])
+      u.profile_type = "Student"
+    else
+      u.profile_type = "Tutor"
+      p = Tutor.create(:name => params[:name], :position => params[:position], :grade => params[:grade])
+    end
+    u.profile_id = p.id
+    u.groups << Group.find(params[:group].to_i)
+    u.save
     render :text => ''
   end
 end
