@@ -82,7 +82,7 @@ class MainController < ApplicationController
   
   def adduser
     u = User.create(:username => params[:username], :hash => "newPass9")
-    if params[:type]
+    if params[:type] == 'true'
       p = Student.create(:name => params[:name], :student_number => params[:studNumber])
       u.profile_type = "Student"
     else
@@ -93,5 +93,10 @@ class MainController < ApplicationController
     u.groups << Group.find(params[:group].to_i)
     u.save
     render :text => ''
+  end
+  
+  def getuser
+    u = User.find(params[:id])
+    render :json => [u, u.profile]
   end
 end

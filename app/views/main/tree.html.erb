@@ -53,37 +53,7 @@ Ext.onReady(function() {
 		buttons: [
 			{
 				text: 'Apply',
-				handler: function() {
-					var parent = tree.getSelectionModel().getSelectedNode();
-					Ext.Ajax.request({ 
-						url: '/adduser',
-						success: function(response) {
-							newId = response.responseText;
-							parent.appendChild(new Ext.tree.TreeNode({
-								id: newId,
-								text: addWindow.get('username-field').getValue()
-							}));
-							addWindow.get('name-field').setValue('');
-							addWindow.get('username-field').setValue('');
-							addWindow.get('stud-num-field').setValue('');
-							addWindow.get('tutor-position-field').setValue('');
-							addWindow.get('tutor-grade-field').setValue('');
-							addWindow.hide();
-						},
-						failure: function() {
-							Ext.Msg.alert("Error", "Unable to add user");
-						},
-						params: {
-							group: parent.id,
-							name: addWindow.get('name-field').getValue(),
-							type: addWindow.get(0).getValue(),
-							username: addWindow.get('username-field').getValue(),															
-							studNumber: addWindow.get('stud-num-field').getValue(),
-							position: addWindow.get('tutor-position-field').getValue(),
-							grade: addWindow.get('tutor-grade-field').getValue()
-						} 
-					});					
-				},
+				handler: addUser
 			},
 			{
 				text: 'Cancel',
@@ -95,6 +65,40 @@ Ext.onReady(function() {
 	});
 	
 	var selectedNode;
+	
+	// Handlers
+	
+	function addUser() {
+		var parent = tree.getSelectionModel().getSelectedNode();
+		Ext.Ajax.request({ 
+			url: '/adduser',
+			success: function(response) {
+				newId = response.responseText;
+				parent.appendChild(new Ext.tree.TreeNode({
+					id: newId,
+					text: addWindow.get('username-field').getValue()
+				}));
+				addWindow.get('name-field').setValue('');
+				addWindow.get('username-field').setValue('');
+				addWindow.get('stud-num-field').setValue('');
+				addWindow.get('tutor-position-field').setValue('');
+				addWindow.get('tutor-grade-field').setValue('');
+				addWindow.hide();
+			},
+			failure: function() {
+				Ext.Msg.alert("Error", "Unable to add user");
+			},
+			params: {
+				group: parent.id,
+				name: addWindow.get('name-field').getValue(),
+				type: addWindow.get(0).getValue(),
+				username: addWindow.get('username-field').getValue(),															
+				studNumber: addWindow.get('stud-num-field').getValue(),
+				position: addWindow.get('tutor-position-field').getValue(),
+				grade: addWindow.get('tutor-grade-field').getValue()
+			} 
+		});					
+	}
 	
 	function userTypeChangeHandler(a, b, c) {
 		if (b) {
@@ -225,6 +229,16 @@ Ext.onReady(function() {
 			}, null, null, node.attributes.text);
 		} else {
 			addWindow.title = 'Edit user';
+			var node = tree.getSelectionModel().getSelectedNode();
+			Ext.Ajax.request({
+				url: '/getuser',
+				params: {
+					id: node.id
+				},
+				success: function(response) {
+					console.log(Ext.util.JSON.decode(response.responseText));
+				}
+			});
 			addWindow.show();	
 		}		
 	}
@@ -248,6 +262,8 @@ Ext.onReady(function() {
 		return true;
 	}
 
+	// Listeners
+	
     tree.render('tree-div');
     tree.getRootNode().expand();
 	
