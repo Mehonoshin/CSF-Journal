@@ -2,4 +2,15 @@
 # See http://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 en:
-  hello: "Hello world"
+  user_management: "User management"
+  course_management: "Course management"
+  marks_setup: "Marks setup"
+  copyright: "Stanislav Mekhonoshin"
+  add: "Add"
+  delete: "Delete"
+  edit: "Edit"
+  subject: "Subject"
+  description: "Description"
+  tutor: "Tutor"
+  student: "Student"
+  log_in: "Log in"

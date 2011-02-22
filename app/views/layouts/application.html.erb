@@ -34,7 +34,10 @@
 		</div><!-- #container-->
 
 		<aside id="sideLeft">
-			<strong>Sidebar</strong>
+			<%= link_to( t('user_management') , '/tree') %> <br />
+			<%= link_to( t('course_management'), courses_path) %> <br />
+			<%= link_to( t('marks_setup') , '/marks') %> <br />
+			<%= link_to( t('log_in'), '/login') %>
 		</aside><!-- #sideLeft -->
 
 	</section><!-- #middle-->
@@ -42,7 +45,7 @@
 </div><!-- #wrapper -->
 
 <footer id="footer">
-	<strong>Mekhonoshin Stanislav (c)</strong>
+	<strong><%= t('copyright') %></strong>
 </footer><!-- #footer -->
 
 </body>

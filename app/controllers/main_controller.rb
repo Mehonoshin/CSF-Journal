@@ -15,7 +15,7 @@ class MainController < ApplicationController
           json << ','
         end
         i += 1
-        json << '{"text":"' + g.description + '","id":"' + g.id.to_s + 'g"}'
+        json << '{"text":"' + g.description + '", iconCls: "group-icon", "id":"' + g.id.to_s + 'g"}'
       end
     end
     users = Group.find(params['node']).users
@@ -24,7 +24,7 @@ class MainController < ApplicationController
         json << ','
       end
       i += 1
-      json << '{"text":"' + g.username + '","id":"' + g.id.to_s + 'u", "leaf" : "true"}'
+      json << '{"text":"' + g.username + '","id":"' + g.id.to_s + 'u", iconCls: "student-icon", "leaf" : "true"}'
     end      
     
     json << ']'

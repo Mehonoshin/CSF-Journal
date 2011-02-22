@@ -1,0 +1,38 @@
+<%= javascript_include_tag "ext/lib/ux/treegrid/TreeGridSorter.js" %>
+<%= javascript_include_tag "ext/lib/ux/treegrid/TreeGridColumnResizer.js" %>
+<%= javascript_include_tag "ext/lib/ux/treegrid/TreeGridNodeUI.js" %>
+<%= javascript_include_tag "ext/lib/ux/treegrid/TreeGridLoader.js" %>
+<%= javascript_include_tag "ext/lib/ux/treegrid/TreeGridColumns.js" %>
+<%= javascript_include_tag "ext/lib/ux/treegrid/TreeGrid.js" %>
+<div id="courses-container"></div>
+<script>
+	var tree = new Ext.ux.tree.TreeGrid({
+	        title: '<%= t("subjects_list") %>',
+	        width: 500,
+	        height: 300,
+	        renderTo: Ext.get('courses-container'),
+	        enableDD: false,
+			tbar: [
+				{ text: "<%= t('add') %>", iconCls: "add-icon" },
+				{ text: "<%= t('delete') %>", iconCls: "delete-icon" },
+				{ text: "<%= t('edit') %>", iconCls: "edit-icon" }
+			],
+	        columns:[
+			{
+	            header: '<%= t("subject") %>',
+	            dataIndex: 'name',
+	            width: 230
+	        },{
+	            header: '<%= t("description") %>',
+	            width: 100,
+	            dataIndex: 'description',
+	            align: 'center',
+	            sortType: 'asFloat'
+	        },{
+				header: '<%= t("tutor") %>',
+				dataIndex: 'tutorName'
+			}],
+
+	        dataUrl: '/courses.json'
+	    });
+</script>

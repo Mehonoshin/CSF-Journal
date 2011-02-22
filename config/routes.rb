@@ -11,4 +11,7 @@ Csf::Application.routes.draw do
   match 'adduser' => "main#adduser"
   match 'getuser' => "main#getuser"
   match 'updateuser' => "main#updateuser"
+  
+  resources :courses
+  
 end
