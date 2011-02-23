@@ -21,7 +21,11 @@
 						{ 
 							text: "<%= t('add_subject') %>", 
 							iconCls: "subject-icon",
-							handler: function() { subjectWindow.show(); } 
+							handler: function() { 
+								subjectWindow.buttons[1].hide();
+								subjectWindow.buttons[0].show();				
+								subjectWindow.show(); 
+							} 
 						},
 						{ 
 							text: "<%= t('add_course') %>", 
@@ -94,11 +98,11 @@
 		buttons: [
 			{
 				text: "<%= t('apply') %>",
-				id: 'apply-btn',
+				id: 'subject-apply-btn',
 				handler: addSubjectHandler,
 			},{
 				text: "<%= t('update') %>",
-				id: 'update-btn',
+				id: 'subject-update-btn',
 				handler: updateSubjectHandler,
 				hidden: true
 			},{
@@ -109,24 +113,45 @@
 	});
 	
 	function editButtonHandler() {
-		
+		var node = tree.getSelectionModel().getSelectedNode();
+		if (node != null) {
+			if (!node.leaf) {
+				subjectWindow.get('subject-name-field').setValue(node.attributes.name);
+				subjectWindow.get('subject-desc-field').setValue(node.attributes.description);
+				subjectWindow.buttons[0].hide();
+				subjectWindow.buttons[1].show();				
+				subjectWindow.show();
+			} else {
+				alert('Not implemented yet!');
+				// subjectWindow().show();
+			}
+		}
 	}
 	
 	function deleteButtonHandler() {
 		var node = tree.getSelectionModel().getSelectedNode();
-		Ext.Ajax.request({
-			method: 'delete',
-			url: '/courses/' + node.id.slice(0, -1),
-			params: {
-				lol: 'hello'
+		if (node != null) {
+			if (!node.leaf) {
+				Ext.Ajax.request({
+					method: 'delete',
+					url: '/subjects/' + node.id,
+					params: {
+						id: node.id
+					},
+					success: function() {
+						node.remove();
+					}
+				});				
+			} else {
+				alert('not implemented yet');
 			}
-		});
+		}
 	}
 	
 	function addSubjectHandler() {
 		Ext.Ajax.request({
 			method: 'post',
-			url: '/courses',
+			url: '/subjects',
 			params: {
 				name: subjectWindow.get('subject-name-field').getValue(),
 				desc: subjectWindow.get('subject-desc-field').getValue()
@@ -156,8 +181,11 @@
 	}
 	
 	function updateSubjectHandler() {
-		subjectWindow.get('apply-btn').hide();
-		subjectWindow.get('update-btn').show();
+		var node = tree.getSelectionModel().getSelectedNode();
+		Ext.Ajax.request({
+			method: "post",
+			url: "/courses",
+		});
 	}
 	
 	function cancelSubjectHandler() {

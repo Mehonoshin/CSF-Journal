@@ -23,11 +23,6 @@ class CoursesController < ApplicationController
   end
   
   def create
-    if params[:name] == nil
-    else
-      s = Subject.create(:name => params[:name], :description => params[:desc])
-      render :json => s.id
-    end
   end
   
   def show
