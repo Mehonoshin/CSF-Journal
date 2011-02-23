@@ -183,8 +183,20 @@
 	function updateSubjectHandler() {
 		var node = tree.getSelectionModel().getSelectedNode();
 		Ext.Ajax.request({
-			method: "post",
-			url: "/courses",
+			method: "put",
+			url: "/subjects/" + node.id,
+			params: {
+				name: subjectWindow.get('subject-name-field').getValue(),
+				desc: subjectWindow.get('subject-desc-field').getValue(),
+				id: node.id
+			},
+			success: function(response) {
+				node.attributes.name = subjectWindow.get('subject-name-field').getValue();
+				node.setText(subjectWindow.get('subject-name-field').getValue());
+				node.attributes.description = subjectWindow.get('subject-desc-field').getValue();
+				clearSubjectWindow();
+				subjectWindow.hide();
+			}
 		});
 	}
 	

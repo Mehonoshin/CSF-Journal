@@ -22,6 +22,13 @@ class SubjectsController < ApplicationController
   end
   
   def update
+    if params[:name] && params[:desc]
+      s = Subject.find(params[:id])
+      s.name = params[:name]
+      s.description = params[:desc]
+      s.save
+    end
+    render :text => ""
   end
   
 end
