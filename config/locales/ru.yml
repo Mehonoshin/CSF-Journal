@@ -35,4 +35,8 @@ ru:
     edit_group_desc: "Описание группы"
     edit_user: "Изменить пользователя"
     cant_move_group_to_user: "Невозможно переместить группу в пользователя!"
-    
+    add_subject: "Добавить предмет"
+    add_course: "Добавить курс"
+    subject_name: "Название предмета"
+    subject_desc: "Описание предмета"
+    course: "Учебный курс"

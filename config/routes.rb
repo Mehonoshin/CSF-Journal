@@ -13,5 +13,6 @@ Csf::Application.routes.draw do
   match 'updateuser' => "main#updateuser"
   
   resources :courses
+  resources :subjects
   
 end

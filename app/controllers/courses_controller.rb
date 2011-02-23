@@ -3,25 +3,31 @@ class CoursesController < ApplicationController
   def index
     respond_to do |format|
       format.html { render :index }
-      format.json { }
+      format.json { 
+        subjects = Subject.all
+        json = '['
+        first = true
+        subjects.each do |s|
+          if not first
+            json << ','
+          else
+            first = false
+          end
+          json << '{ id: ' + s.id.to_s + ', name: "' + s.name + '", description: "' + s.description + '", iconCls: "subject-icon", type: "subject"'
+          json << ' }'
+        end
+        json << ']'
+        render :text => json
+      }
     end
   end
   
   def create
-    subjects = Subject.all
-    json = '['
-    first = true
-    subjects.each do |s|
-      json << '{ name: "' + s.name + '", description: "' + s.description + '", iconCls: "subject-icon",'+
-      ' children:[{ name: "Практика" }, {name: "Лекция"}] }'
-      if not first
-        json << ','
-      else
-        first = false
-      end
+    if params[:name] == nil
+    else
+      s = Subject.create(:name => params[:name], :description => params[:desc])
+      render :json => s.id
     end
-    json << ']'
-    render :text => json
   end
   
   def show
@@ -31,6 +37,7 @@ class CoursesController < ApplicationController
   end
 
   def destroy
+    render :text => ""
   end
   
 end
