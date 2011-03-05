@@ -24,13 +24,13 @@ Ext.onReady(function() {
 
 	var contextMenu = new Ext.menu.Menu({
 		items: [
-			{ text: "<%= t('add_user') %>", handler: addHandler },
-			{ text: "<%= t('add_group') %>", handler: addGroupHandler },
-			{ text: "<%= t('edit') %>", handler: editHandler },
-			{ text: "<%= t('delete') %>", handler: deleteHandler },
-			{ text: "<%= t('copy') %>", handler: copyHandler },
-			{ text: "<%= t('paste') %>", handler: pasteHandler, disabled: "true" },
-			{ text: "<%= t('delete_from') %>", handler: delfromHandler}
+			{ text: "<%= t('add_user') %>", iconCls: 'add-user-icon', handler: addHandler },
+			{ text: "<%= t('add_group') %>", iconCls: 'add-group-icon', handler: addGroupHandler },
+			{ text: "<%= t('edit') %>", iconCls: 'edit-icon', handler: editHandler },
+			{ text: "<%= t('delete') %>", iconCls: 'delete-icon', handler: deleteHandler },
+			{ text: "<%= t('copy') %>", iconCls: 'copy-icon', handler: copyHandler },
+			{ text: "<%= t('paste') %>", iconCls: 'paste-icon', handler: pasteHandler, disabled: "true" },
+			{ text: "<%= t('delete_from') %>", iconCls: 'delete-from-group-icon', handler: delfromHandler}
 		]
 	});
 	

@@ -123,7 +123,6 @@
 				subjectWindow.show();
 			} else {
 				alert('Not implemented yet!');
-				// subjectWindow().show();
 			}
 		}
 	}
@@ -179,6 +178,13 @@
 		subjectWindow.get("subject-desc-field").setValue('');
 		subjectWindow.hide();
 	}
+
+	// TODO!
+	function clearCourseWindow() {
+		// subjectWindow.get("subject-name-field").setValue('');
+		// subjectWindow.get("subject-desc-field").setValue('');
+		// subjectWindow.hide();
+	}
 	
 	function updateSubjectHandler() {
 		var node = tree.getSelectionModel().getSelectedNode();
@@ -213,7 +219,7 @@
 	}
 	
 	function cancelCourseHandler() {
-		
+		clearCourseWindow();
 	}
 	
 	
