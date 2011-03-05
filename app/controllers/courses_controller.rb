@@ -13,7 +13,22 @@ class CoursesController < ApplicationController
           else
             first = false
           end
-          json << '{ id: ' + s.id.to_s + ', name: "' + s.name + '", description: "' + s.description + '", iconCls: "subject-icon", type: "subject"'
+          json << 
+          '{ 
+            id: ' + s.id.to_s + 
+            ', name: "' + s.name + 
+            '", description: "' + s.description + 
+            '", iconCls: "subject-icon", 
+            type: "subject"'
+          if s.courses.empty?
+            json << ', leaf: "true"'
+          else
+            json << ', children: ['
+            s.courses.each do |c|
+              json << '{ name: "' + s.name + '", description: "' + c.group.description + '", iconCls: "group-icon", leaf: "true" }'
+            end
+            json << ']'
+          end          
           json << ' }'
         end
         json << ']'
