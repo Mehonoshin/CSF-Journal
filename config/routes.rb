@@ -14,5 +14,6 @@ Csf::Application.routes.draw do
   
   resources :courses
   resources :subjects
+  resources :marks
   
 end

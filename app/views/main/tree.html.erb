@@ -130,14 +130,28 @@ Ext.onReady(function() {
 	}
 	
 	function userTypeChangeHandler(a, b, c) {
-		if (addWindow.get(0).getValue()) {
-			addWindow.get('stud-num-field').show();
-			addWindow.get('tutor-position-field').hide();
-			addWindow.get('tutor-grade-field').hide();
+		// WARNING!
+		// FIX IT!!!
+		if (b != null) {
+			if (b) {
+				addWindow.get('stud-num-field').show();
+				addWindow.get('tutor-position-field').hide();
+				addWindow.get('tutor-grade-field').hide();
+			} else {
+				addWindow.get('tutor-position-field').show();
+				addWindow.get('tutor-grade-field').show();
+				addWindow.get('stud-num-field').hide();
+			}			
 		} else {
-			addWindow.get('tutor-position-field').show();
-			addWindow.get('tutor-grade-field').show();
-			addWindow.get('stud-num-field').hide();
+			if (addWindow.get(0).getValue()) {
+				addWindow.get('stud-num-field').show();
+				addWindow.get('tutor-position-field').hide();
+				addWindow.get('tutor-grade-field').hide();
+			} else {
+				addWindow.get('tutor-position-field').show();
+				addWindow.get('tutor-grade-field').show();
+				addWindow.get('stud-num-field').hide();
+			}			
 		}
 	}
 	
