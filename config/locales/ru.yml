@@ -40,3 +40,5 @@ ru:
     subject_name: "Название предмета"
     subject_desc: "Описание предмета"
     course: "Учебный курс"
+    group: "Группа"
+    choose_tutor: "Выберите преподавателя"

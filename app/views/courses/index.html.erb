@@ -7,6 +7,17 @@
 <div id="courses-container"></div>
 <script>
 
+	var tutorsStore = new Ext.data.Store({ 
+		reader: new Ext.data.JsonReader({ 
+			fields: ['id', 'name'],
+			root: 'rows'
+		}), 
+		proxy: new Ext.data.HttpProxy({
+			url: '/tutors.json'
+		}),
+		autoLoad: true
+	});
+
 	var tree = new Ext.ux.tree.TreeGrid({
 	        title: '<%= t("subjects_list") %>',
 	        width: 600,
@@ -30,7 +41,11 @@
 						{ 
 							text: "<%= t('add_course') %>", 
 							iconCls: "group-icon",
-							handler: function() { courseWindow.show(); } 
+							handler: function() { 
+								parent = tree.getSelectionModel().getSelectedNode();
+								courseWindow.get('subject-field').setValue(parent.attributes.name);
+								courseWindow.show();
+							} 
 						}
 					]
 				},
@@ -56,16 +71,51 @@
 	        dataUrl: '/courses.json'
 	});
 	
+    var groups = new Ext.tree.TreePanel({
+        useArrows: true,
+		width: 200,
+		height: 200,
+        animate: true,
+        enableDD: false,
+        autoScroll: true,
+		containerScroll: true,
+        border: true,
+		requestMethod: 'GET',
+        dataUrl: '/groups.json',
+		fieldLabel: "<%= t('group') %>",
+		
+        root: {
+            nodeType: 'async',
+            text: "<%= t('people') %>",
+            draggable: false,
+            id: '1'
+        }
+    });
+
 	var courseWindow = new Ext.Window({ 
 		layout: 'form',
 		title: "<%= t('course') %>",
-		height: 250, 
-		width: 300,
+		height: 300, 
+		width: 400,
 		resizable: false,
 		closeAction: 'hide',
 		items: [
-			{ xtype: 'radio', fieldLabel: "<%= t('tutor') %>", name: 'userType' },
-			{ xtype: 'textfield', fieldLabel: "<%= t('grade') %>", id: "tutor-grade-field" },
+			{ 
+				xtype: 'combo', 
+				fieldLabel: "<%= t('tutor') %>", 
+				id: 'tutor-field',
+				store: tutorsStore,
+				mode: 'local',
+				displayField: 'name',
+				onSelect: function(record) {
+					courseWindow.get('tutor-field').setValue(record.data.name);
+				}
+			}, { 
+				xtype: 'textfield', 
+				fieldLabel: "<%= t('subject') %>", 
+				id: "subject-field",
+				readOnly: true 
+			}, groups
 		],
 		buttons: [
 			{
@@ -115,7 +165,7 @@
 	function editButtonHandler() {
 		var node = tree.getSelectionModel().getSelectedNode();
 		if (node != null) {
-			if (!node.leaf) {
+			if (node.attributes.type == 'subject') {
 				subjectWindow.get('subject-name-field').setValue(node.attributes.name);
 				subjectWindow.get('subject-desc-field').setValue(node.attributes.description);
 				subjectWindow.buttons[0].hide();
@@ -179,11 +229,10 @@
 		subjectWindow.hide();
 	}
 
-	// TODO!
 	function clearCourseWindow() {
-		// subjectWindow.get("subject-name-field").setValue('');
-		// subjectWindow.get("subject-desc-field").setValue('');
-		// subjectWindow.hide();
+		courseWindow.get("tutor-field").setValue('');
+		courseWindow.get("subject-field").setValue('');
+		courseWindow.hide();
 	}
 	
 	function updateSubjectHandler() {
