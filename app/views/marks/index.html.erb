@@ -1,1 +1,5 @@
-здесь будет выбор проводимого курса и далее отображение ведомостей
+<% @courses.each do |c| %>
+	<%= c.tutor.name %> 
+	<%= link_to(c.subject.name, course_path(c)) %>
+	<%= c.group.description %> <br />
+<% end %>

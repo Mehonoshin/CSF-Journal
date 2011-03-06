@@ -2,7 +2,7 @@ class CoursesController < ApplicationController
   
   def index
     respond_to do |format|
-      format.html { render :index }
+      format.html {}
       format.json { 
         subjects = Subject.all
         json = '['
