@@ -6,7 +6,9 @@
 <%= javascript_include_tag "ext/lib/ux/treegrid/TreeGrid.js" %>
 <div id="courses-container"></div>
 <script>
-
+	var selectedTutor;
+	var selectedSubject;
+	
 	var tutorsStore = new Ext.data.Store({ 
 		reader: new Ext.data.JsonReader({ 
 			fields: ['id', 'name'],
@@ -109,6 +111,7 @@
 				displayField: 'name',
 				onSelect: function(record) {
 					courseWindow.get('tutor-field').setValue(record.data.name);
+					selectedTutor = record.data.id;
 				}
 			}, { 
 				xtype: 'textfield', 
@@ -260,7 +263,29 @@
 	}
 	
 	function addCourseHandler() {
+		subject_id = selectedSubject;
+		tutor_id = selectedTutor;
 		
+		parentSubject = tree.getSelectionModel().getSelectedNode();
+		group_id = groups.getSelectionModel().getSelectedNode().id.slice(0, -1);
+		Ext.Ajax.request({
+			method: 'post',
+			url: '/courses',
+			params: {
+				subject: subject_id,
+				group: group_id,
+				tutor: tutor_id
+			},
+			success: function(response) {
+				newId = response.responseText;				
+				parentSubject.appendChild(new Ext.tree.TreeNode({
+					id: newId,
+					name: courseWindow.get('subject-field').getValue(),
+					iconCls: 'group-icon'
+				}));
+				clearCourseWindow();
+			}
+		});			
 	}
 	
 	function updateCourseHandler() {
@@ -271,5 +296,5 @@
 		clearCourseWindow();
 	}
 	
-	
+	tree.on('click', function(node, eventO) { selectedSubject = node.id; });
 </script>

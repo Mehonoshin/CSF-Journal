@@ -38,6 +38,8 @@ class CoursesController < ApplicationController
   end
   
   def create
+    c = Course.create(:group_id => params[:group], :tutor_id => params[:tutor], :subject_id => params[:subject])
+    render :text => c.id.to_s
   end
   
   def show
