@@ -1,1 +1,46 @@
-Marks here
+<script>
+<% @maxColsNum = 10 %>
+
+Ext.onReady(function() {
+	
+	var proxy = new Ext.data.HttpProxy({
+	    url: 'courses/<%= params[:id] %>.json'
+	});
+	var studentStore = new Ext.data.Store({
+		data: [
+			["Мехоношин Станислав Игоревич", 80, 90, 80, 80],
+			["Шипухов Никита Владимирович", 0, 0, 0, 30, 40]
+		],
+		reader: new Ext.data.ArrayReader({id: 'id'}, ['name', 'one', 'two', 'three', 'four', 'five', 'six'])
+	});
+	var columnModel = new Ext.grid.ColumnModel({
+		columns: [
+			{ header: "<%= t('fullname') %>" },
+			<% 1.upto(@maxColsNum) { |i| %>
+				<%= "{ header: '" + i.to_s + "', width: 30 }," %>
+			<% } %>
+		],	
+	});
+	var courseGrid = new Ext.grid.GridPanel({
+		renderTo: Ext.get('marks-table'),
+		frame: true,
+		title: "<%= t('journal') %>",
+		height: 300,
+		width: 750,
+		store: studentStore,
+		colModel: columnModel,
+		tbar: [
+			{ text: "<%= t('add_mark') %>", id: "add-col", iconCls: "add-icon" }
+		]
+	});
+	
+	// Events listeners
+	Ext.get('add-col').on('click', function() {
+		conf = columnModel.config;
+		conf.push( { header:'text', width: 100 } );
+		columnModel.setConfig(conf);
+	});
+});
+
+</script>
+<div id="marks-table"></div>

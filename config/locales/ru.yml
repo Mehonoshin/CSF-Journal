@@ -42,3 +42,6 @@ ru:
     course: "Учебный курс"
     group: "Группа"
     choose_tutor: "Выберите преподавателя"
+    journal: "Ведомость"
+    fullname: "ФИО"
+    add_mark: "Добавить оценку"

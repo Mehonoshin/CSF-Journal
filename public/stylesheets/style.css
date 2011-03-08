@@ -29,6 +29,22 @@ img {
 input {
 	vertical-align: middle;
 }
+.cont-table {
+	margin: 20px;
+	border-collapse:collapse;
+}
+.cont-table td, th, tr {
+	border: 1px solid #98BF21;
+	padding: 3px;
+}
+.cont-table .alt tr {
+	background: #E9F1D2;
+}
+.cont-table th {
+	background: #A7C942;
+	color: white;
+	padding: 3px;
+}
 #wrapper {
 	width: 100%;
 	min-width: 800px;
