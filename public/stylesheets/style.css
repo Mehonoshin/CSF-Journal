@@ -19,6 +19,7 @@ a {
 }
 a:hover {
 	text-decoration: none;
+	color: #A30F34;
 }
 p {
 	margin: 0 0 18px
@@ -102,8 +103,11 @@ input {
 /* Footer
 -----------------------------------------------------------------------------*/
 #footer {
-	margin: -15px auto 0;
+	margin: -28px auto 0;
 	min-width: 800px;
-	height: 15px;
+	height: 28px;
 /*	background: #F97083;*/
+}
+#copyright {
+/*	padding: -40px;*/
 }
