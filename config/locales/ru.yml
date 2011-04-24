@@ -45,3 +45,7 @@ ru:
     journal: "Ведомость"
     fullname: "ФИО"
     add_mark: "Добавить оценку"
+    configure_tasks: "Настройки"
+    login: "Войти"
+    password: "Пароль"
+    log_out: "Выйти"

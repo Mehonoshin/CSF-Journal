@@ -13,9 +13,7 @@ body {
 	height: 100%;
 }
 a {
-	color: blue;
-	outline: none;
-	text-decoration: underline;
+	color: green;
 }
 a:hover {
 	text-decoration: none;
@@ -30,21 +28,19 @@ img {
 input {
 	vertical-align: middle;
 }
-.cont-table {
-	margin: 20px;
+.custom table {
 	border-collapse:collapse;
+	margin: 10px;
 }
-.cont-table td, th, tr {
-	border: 1px solid #98BF21;
-	padding: 3px;
+
+.custom table, .custom td, .custom th {
+	border:1px solid #98BF21;
+	padding: 2px;
+	margin: 10px;
 }
-.cont-table .alt tr {
-	background: #E9F1D2;
-}
-.cont-table th {
-	background: #A7C942;
-	color: white;
-	padding: 3px;
+th {	
+	background-color:#A7C942;
+	color:white;
 }
 #wrapper {
 	width: 100%;
@@ -53,14 +49,35 @@ input {
 	height: auto !important;
 	height: 100%;
 }
-
+#auth-form {
+	width: 300px;
+	margin: auto;
+}
+.button {
+	margin-top: 10px;
+	padding: 4px;
+	background: #A7C942;
+	font-weight:bold;
+	color: white;
+	border: 1px solid; 
+	border-color: #696 #363 #363 #696;
+}
+.input {
+	font-size: 16pt;
+	margin-top: 5px;
+}
 
 /* Header
 -----------------------------------------------------------------------------*/
 #header {
-	height: 50px;
-	background: #A30F34;
+	display: block;
+	text-decoration: none;
+	height: 40px;
+	font-size: 22px;
 	color: #FFFFFF;
+	padding: 10px;
+	background: #606060;
+	text-decoration:none;
 }
 
 

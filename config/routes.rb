@@ -18,4 +18,8 @@ Csf::Application.routes.draw do
   resources :tutors
   resources :groups
   
+  resource :session
+  match '/login' => "sessions#new", :as => "login" 
+  match '/logout' => "sessions#destroy", :as => "logout"
+  
 end

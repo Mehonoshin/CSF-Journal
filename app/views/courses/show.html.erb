@@ -2,10 +2,15 @@
 <% @maxColsNum = 10 %>
 
 Ext.onReady(function() {
+	var today = new Date();
+	date = today.getDate() + '.'+ (today.getMonth() + 1) + '.' + today.getFullYear();
+	
+	var attendance_edit = new Ext.form.TextField();
 	
 	var proxy = new Ext.data.HttpProxy({
 	    url: 'courses/<%= params[:id] %>.json'
 	});
+	
 	var studentStore = new Ext.data.Store({
 		data: [
 			["Мехоношин Станислав Игоревич", 80, 90, 80, 80],
@@ -13,32 +18,36 @@ Ext.onReady(function() {
 		],
 		reader: new Ext.data.ArrayReader({id: 'id'}, ['name', 'one', 'two', 'three', 'four', 'five', 'six'])
 	});
+	
 	var columnModel = new Ext.grid.ColumnModel({
 		columns: [
 			{ header: "<%= t('fullname') %>" },
 			<% 1.upto(@maxColsNum) { |i| %>
-				<%= "{ header: '" + i.to_s + "', width: 30 }," %>
+				<%= "{ header: '" + i.to_s + "', width: 30, editor: attendance_edit }," %>
 			<% } %>
 		],	
 	});
-	var courseGrid = new Ext.grid.GridPanel({
+	var courseGrid = new Ext.grid.EditorGridPanel({
 		renderTo: Ext.get('marks-table'),
 		frame: true,
 		title: "<%= t('journal') %>",
 		height: 300,
 		width: 750,
+		clicksToEdit: 1,
 		store: studentStore,
 		colModel: columnModel,
 		tbar: [
-			{ text: "<%= t('add_mark') %>", id: "add-col", iconCls: "add-icon" }
+			{ text: "<%= t('add_mark') %>", id: "add-col", iconCls: "add-icon" },
+			{ text: "<%= t('configure_tasks') %>", id: "edit-col", iconCls: "edit-icon" }
 		]
 	});
 	
 	// Events listeners
 	Ext.get('add-col').on('click', function() {
 		conf = columnModel.config;
-		conf.push( { header:'text', width: 100 } );
+		conf.push( { header: date, width: 100, editor: attendance_edit } );
 		columnModel.setConfig(conf);
+		// studentStore.add(new Ext.data.Record());
 	});
 });
 

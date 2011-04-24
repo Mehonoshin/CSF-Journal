@@ -1,0 +1,10 @@
+<aside id="sideLeft">
+	<% if session[:user_id] %>
+		<%= link_to( t('user_management') , '/tree') %> <br />
+		<%= link_to( t('course_management'), courses_path) %> <br />
+		<%= link_to( t('marks_setup') , '/marks') %> <br />
+		<%= link_to( t('log_out'), '/logout') %>
+	<% else %>
+		<%= link_to( t('log_in'), '/login') %>
+	<% end %>
+</aside><!-- #sideLeft -->

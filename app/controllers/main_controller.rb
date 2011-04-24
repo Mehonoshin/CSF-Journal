@@ -1,5 +1,8 @@
 class MainController < ApplicationController
   def index
+    if id = session[:user_id]
+      @user = User.find(id)
+    end    
   end
   
   def tree

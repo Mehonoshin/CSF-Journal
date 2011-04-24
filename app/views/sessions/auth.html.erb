@@ -1,0 +1,9 @@
+<div id="auth-form">	
+	<%= form_tag session_path do %>
+		<h2><%= t('username') %>:</h2>
+		<div><%= text_field_tag :login, nil, :class => 'input' %></div>
+		<h2><%= t('password') %>:</h2>
+		<div><%= password_field_tag :password, nil, :class => "input" %></div>
+		<div><%= submit_tag t('login'), :class => "button" %></div>
+	<% end %>
+</div>
