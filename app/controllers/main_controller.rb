@@ -1,4 +1,6 @@
-class MainController < ApplicationController
+class MainController < ApplicationController  
+  before_filter :authenticate
+  
   def index
     if id = session[:user_id]
       @user = User.find(id)

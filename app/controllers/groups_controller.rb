@@ -1,4 +1,5 @@
 class GroupsController < ApplicationController
+  before_filter :authenticate
   
   def index
     respond_to do |format|

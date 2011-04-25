@@ -1,4 +1,5 @@
 class CoursesController < ApplicationController
+  before_filter :authenticate
   
   def index
     respond_to do |format|
@@ -43,20 +44,15 @@ class CoursesController < ApplicationController
   end
   
   def show
-    respond_to do |format|
-      format.html { 
-        @students = Course.find(params[:id]).group.users 
-        # Getting max rows count
-        @maxColsNum = 0
-        @students.each do |s|
-          c = s.profile.marks.count
-          if (c > @maxColsNum)
-            @maxColsNum = c
-          end
-        end
-      }
-      format.json { render :text => "kson it" }
-    end    
+    @students = Course.find(params[:id]).group.users 
+    # Getting max rows count
+    @maxColsNum = 0
+    @students.each do |s|
+      c = s.profile.marks.where("course_id="+params[:id]).count
+      if (c > @maxColsNum)
+        @maxColsNum = c
+      end
+    end
   end
   
   def update

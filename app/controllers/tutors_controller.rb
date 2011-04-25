@@ -1,4 +1,5 @@
 class TutorsController < ApplicationController
+  
   def index
     respond_to do |format|
       format.html { render :text => ""}
@@ -17,5 +18,9 @@ class TutorsController < ApplicationController
         render :text => json
       }      
     end
+  end
+  
+  def show
+    @tutor = Tutor.find(params[:id])
   end
 end

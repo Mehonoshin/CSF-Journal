@@ -49,3 +49,6 @@ ru:
     login: "Войти"
     password: "Пароль"
     log_out: "Выйти"
+    tutors: "Преподаватели"
+    students: "Студенты"
+    tutors_summary: "Информация о преподавателе"

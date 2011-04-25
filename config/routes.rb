@@ -1,5 +1,7 @@
 Csf::Application.routes.draw do
   root :to => "main#index"
+  
+  # TODO: fix these routes with its controller
   match 'tree' => "main#tree"
   match 'gettree' => "main#gettree"
   match 'move' => "main#move"  
@@ -11,6 +13,7 @@ Csf::Application.routes.draw do
   match 'adduser' => "main#adduser"
   match 'getuser' => "main#getuser"
   match 'updateuser' => "main#updateuser"
+  # end of fix
   
   resources :courses
   resources :subjects
@@ -21,5 +24,7 @@ Csf::Application.routes.draw do
   resource :session
   match '/login' => "sessions#new", :as => "login" 
   match '/logout' => "sessions#destroy", :as => "logout"
+  
+  match ':controller(/:action(/:id(.:format)))'
   
 end

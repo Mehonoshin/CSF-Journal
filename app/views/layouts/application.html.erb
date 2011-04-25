@@ -13,6 +13,8 @@
 	
 	<%= javascript_include_tag "ext/adapter/ext/ext-base.js" %>
 	<%= javascript_include_tag "ext/ext-all-debug.js" %>
+	<%= javascript_include_tag "jquery.js" %>
+	<%= javascript_include_tag "use.js" %>
 	<%= csrf_meta_tag %>
 	<!--[if lte IE 6]><link rel="stylesheet" href="style_ie.css" type="text/css" media="screen, projection" /><![endif]-->
 </head>
@@ -22,7 +24,7 @@
 <div id="wrapper">
 
 	<header id="header">
-		<h1>CSF App</h1>
+		<h1 class="header-link"><%= link_to 'CSF App', root_path %></h1>
 	</header><!-- #header-->
 
 	<section id="middle">

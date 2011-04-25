@@ -1,5 +1,5 @@
 class SessionsController < ApplicationController
-  layout 'unauthorised'
+  # layout 'unauthorised'
   
   def new
     render 'auth.html.erb'

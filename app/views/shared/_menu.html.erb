@@ -5,6 +5,8 @@
 		<%= link_to( t('marks_setup') , '/marks') %> <br />
 		<%= link_to( t('log_out'), '/logout') %>
 	<% else %>
+		<%= link_to( t('tutors'), '/info/tutors') %> <br />
+		<%= link_to( t('students'), '/info/students') %> <br />
 		<%= link_to( t('log_in'), '/login') %>
 	<% end %>
 </aside><!-- #sideLeft -->
