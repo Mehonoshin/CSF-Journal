@@ -1,0 +1,13 @@
+.custom
+	%table.cont-table
+		%th
+			= t('name')
+		%th
+			= t('position')
+		
+		- @tutors.each do |t|
+			%tr
+				%td
+					= link_to t.name, tutor_path(t)
+				%td
+					= t.position

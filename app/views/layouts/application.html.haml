@@ -1,0 +1,30 @@
+!!! 5
+%html{ html_attrs('ru') }
+	%head
+		%meta(http-equiv="Content-Type" content="text/html; charset=utf-8")
+		%title ФКН. Электронный факультет.		
+		= stylesheet_link_tag :all
+		= stylesheet_link_tag "/javascripts/ext/resources/css/ext-all.css"
+		= javascript_include_tag "ext/adapter/ext/ext-base.js"
+		= javascript_include_tag "ext/ext-all-debug.js"
+		= javascript_include_tag "jquery.js"
+		= javascript_include_tag "use.js"
+		= csrf_meta_tag
+		
+	%body
+		#wrapper
+			%header#header
+				%h1.header-link
+					=link_to 'CSF App', root_path
+			%section#middle
+				#container
+					#content
+						= yield
+				= render :partial => 'shared/menu'
+				
+		%footer#footer
+			#copyright
+				%img{ 'src' => "/images/csflogo.jpg" }
+				%a{ 'href' => 'https://github.com/Mehonoshin/CSF-Journal' }
+					%strong
+						= t('copyright')

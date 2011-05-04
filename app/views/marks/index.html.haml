@@ -1,0 +1,14 @@
+.custom
+	%table.cont-table
+		%th
+			= t('course')
+		%th
+		%th
+		- @courses.each do |c| 
+			%tr
+				%td
+					= c.tutor.name
+				%td 
+					= link_to(c.subject.name, course_path(c))
+				%td
+					= c.group.description

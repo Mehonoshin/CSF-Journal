@@ -1,0 +1,19 @@
+.item
+	%span.itemheader
+		= t('tutors_summary')
+
+	%div
+		%div
+			%span.field-desc
+				= t('name') + ":"
+				= @tutor.name
+
+		%div
+			%span.field-desc
+				= t('position') + ":"
+				= @tutor.position
+				
+		%div
+			%span.field-desc
+				= t('grade') + ":"
+				= @tutor.grade

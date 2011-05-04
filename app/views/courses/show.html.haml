@@ -1,0 +1,28 @@
+%br
+%div
+	%a{ 'href' => "#", 'id' => "add-mark-btn", 'class' => "tryitbtn" }
+		= t('add_mark')
+
+.custom
+	%table#marks-table
+
+		%th
+			= t('name')
+			
+		- for i in 1..@maxColsNum
+			%th
+				= i
+		
+		- @students.each do |s|
+			%tr
+				%td
+					= s.profile.name
+				- i = 0
+				- s.profile.marks.where("course_id=" + params[:id]).each do |m|
+					%td.marks-table-cell
+						= m.value
+					- i += 1
+				
+				- while i < @maxColsNum
+					%td.marks-table-cell
+					- i += 1
