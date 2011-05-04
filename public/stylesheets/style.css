@@ -53,15 +53,14 @@ a.tryitbtn {
 	margin: 10px;
 }
 .custom td:hover {
-	background: red;
+	background: #D0E6CF;
 }
 .custom tr:hover {
-	background: blue;
+	background: #EDEDED;
 }
-
 th {	
 	background-color:#A7C942;
-	color:white;
+	color: white;
 }
 .header-link a {
 	text-decoration: none;

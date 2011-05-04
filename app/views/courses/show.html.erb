@@ -14,9 +14,15 @@
 		<% @students.each do |s| %>
 			<tr>
 				<td><%= s.profile.name %></td>
-				<% s.profile.marks.where("course_id="+params[:id]).each do |m| %>
-					<td><%= m.value %></td>
+				<% i = 0 %>
+				<% s.profile.marks.where("course_id=" + params[:id]).each do |m| %>
+					<td class="marks-table-cell"><%= m.value %></td>
+					<% i += 1 %>
 				<% end %>
+				
+				<% i.upto(@maxColsNum - 1) { %>
+					<td class="marks-table-cell"></td>
+				<% } %>				
 			</tr>
 		<% end %>
 	</table>
